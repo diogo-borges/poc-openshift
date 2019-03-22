@@ -1,30 +1,18 @@
 const mongoose = require('mongoose');
 const fastify = require('fastify')();
 
-const server_port = process.env.OPENSHIFT_NODEJS_PORT || 8080
-const server_ip_address = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1'
-
-const db_name = 'openshiftDB'
-
-const mongodb_connection_string = 'mongodb://127.0.0.1:27017/' + db_name;
-
-if (process.env.OPENSHIFT_MONGODB_DB_URL) {
-  mongodb_connection_string = process.env.OPENSHIFT_MONGODB_DB_URL + db_name;
-}
-
 fastify.get('/', (req, res) => {
   res.send({ Hello: "World!" })
 })
-
-fastify.listen(8080, '172.30.80.98', function () {
-  console.log("Listening on " + server_ip_address + ", port " + server_port)
-});
+fastify.listen('http://nodejs-mongo-persistent-openshiftpocdiogo.7e14.starter-us-west-2.openshiftapps.com:8080').then(() => console.log(`server listening on ${fastify.server.address().port}`))
 
 // Connect to the db
-mongoose.connect(mongodb_connection_string, function (err) {
+mongoose.connect(`mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@nodejs-mongo-persistent:27017/openshiftDB`, function (err) {
   if (err) console.log(err)
 
   console.log('Connected in DB by Diogo');
+  console.log('teste', process.env.MONGODB_PASSWORD, process.env.OPENSHIFT_MONGODB_PASSWORD)
+  console.log('teste2', process.env.MONGODB_USER, process.env.OPENSHIFT_MONGODB_USER);
   const usersSchema = new mongoose.Schema({
     name: { type: String }
   });
