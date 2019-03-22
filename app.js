@@ -16,7 +16,7 @@ fastify.get('/', (req, res) => {
   res.send({ Hello: "World!" })
 })
 
-fastify.listen(server_port, server_ip_address, function () {
+fastify.listen(8080, '172.30.80.98', function () {
   console.log("Listening on " + server_ip_address + ", port " + server_port)
 });
 
