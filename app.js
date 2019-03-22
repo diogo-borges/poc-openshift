@@ -4,13 +4,13 @@ const fastify = require('fastify')();
 fastify.get('/', (req, res) => {
   res.send({ Hello: "World!" })
 })
-fastify.listen(8080).then(() => console.log(`server listening on ${fastify.server.address().port}`))
+fastify.listen('http://nodejs-mongo-persistent-openshiftpocdiogo.7e14.starter-us-west-2.openshiftapps.com/').then(() => console.log(`server listening on ${fastify.server.address().port}`))
 
 // Connect to the db
-mongoose.connect("mongodb://localhost:27017/openshiftDB", function (err) {
+mongoose.connect(`mongodb://${process.env.MONGODB_USER}:${process.env.MONGODB_PASSWORD}@mongodb.openshiftpocdiogo.svc.cluster.local:27017/openshiftDB`, function (err) {
   if (err) console.log(err)
 
-  console.log('Connected by Diogo');
+  console.log('Connected in DB by Diogo');
   const usersSchema = new mongoose.Schema({
     name: { type: String }
   });
